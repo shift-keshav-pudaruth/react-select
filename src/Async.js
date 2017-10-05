@@ -21,7 +21,7 @@ const propTypes = {
 	onChange: PropTypes.func,                  // onChange handler: function (newValue) {}
 	onInputChange: PropTypes.func,             // optional for keeping track of what is being typed
 	options: PropTypes.array.isRequired,       // array of options
-  pagination: PropTypes.bool,								 // automatically load more options when the option list is scrolled to the end; default to false
+	pagination: PropTypes.bool,					// automatically load more options when the option list is scrolled to the end; default to false
 	placeholder: PropTypes.oneOfType([         // field placeholder, displayed when there's no value (shared with Select)
 		PropTypes.string,
 		PropTypes.node
@@ -100,37 +100,27 @@ export default class Async extends Component {
 				page: cache[inputValue].page,
 			});
 
-			if (
-				!pagination ||
-				(pagination && (cache[inputValue].page >= page || cache[inputValue].hasReachedLastPage))
-			) {
+			if (!pagination ||
+				(pagination && (cache[inputValue].page >= page || cache[inputValue].hasReachedLastPage))) {
 				return;
 			}
 		}
 
 		const callback = (error, data) => {
-			const options = data && data.options || [];
+			let options = data && data.options || [];
 
-<<<<<<< HEAD
+			const hasReachedLastPage = pagination && options.length === 0;
+
+			if(page > 1) {
+				options = this.state.options.concat(options);
+			}
+
 			if (cache) {
-				cache[inputValue] = options;
+				cache[inputValue] = { page, options, hasReachedLastPage };
 			}
 
 			if (callback === this._callback) {
 				this._callback = null;
-=======
-				let options = data && data.options || [];
-
-				const hasReachedLastPage = pagination && options.length === 0;
-
-				if(page > 1) {
-					options = this.state.options.concat(options);
-				}
-
-				if (cache) {
-					cache[inputValue] = { page, options, hasReachedLastPage };
-				}
->>>>>>> pr/1
 
 				this.setState({
 					isLoading: false,
@@ -211,7 +201,7 @@ export default class Async extends Component {
 	}
 
 	onMenuScrollToBottom (inputValue) {
-		if (!this.props.pagination || this.state.isLoading) return;
+		if (!this.props.pagination || this.state.isLoading)return;
 
 		this.loadOptions(inputValue, this.state.page + 1);
 	}
