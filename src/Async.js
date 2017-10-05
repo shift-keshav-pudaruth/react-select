@@ -81,7 +81,7 @@ export default class Async extends Component {
 			});
 		}
 
-		if (props.shouldReloadOptions && props.shouldReloadOptions()) {
+		if (nextProps.shouldReloadOptions && nextProps.shouldReloadOptions()) {
 			this.loadOptions();
 		}
 	}

@@ -1928,7 +1928,7 @@ var Async = function (_Component) {
 				});
 			}
 
-			if (props.shouldReloadOptions && props.shouldReloadOptions()) {
+			if (nextProps.shouldReloadOptions && nextProps.shouldReloadOptions()) {
 				this.loadOptions();
 			}
 		}
