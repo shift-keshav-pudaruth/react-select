@@ -30,6 +30,7 @@ const propTypes = {
 		PropTypes.string,
 		PropTypes.node
 	]),
+	shouldReloadOptions: React.PropTypes.func, // function to check if we should reload the loptions; (): bool
 	value: PropTypes.any,                      // initial field value
 };
 
@@ -78,6 +79,10 @@ export default class Async extends Component {
 			this.setState({
 				options: nextProps.options,
 			});
+		}
+
+		if (props.shouldReloadOptions && props.shouldReloadOptions()) {
+			this.loadOptions();
 		}
 	}
 
@@ -183,6 +188,16 @@ export default class Async extends Component {
 		return inputValue;
 	}
 
+	onOpen () {
+		if (this.props.shouldReloadOptions && this.props.shouldReloadOptions()) {
+			this.loadOptions();
+		}
+		
+		if (this.props.onOpen) {
+			this.props.onOpen();
+		}
+	}
+
 	noResultsText() {
 		const { loadingPlaceholder, noResultsText, searchPromptText } = this.props;
 		const { inputValue, isLoading } = this.state;
@@ -223,6 +238,7 @@ export default class Async extends Component {
 			isLoading,
 			onInputChange: this.onInputChange,
 			onMenuScrollToBottom: this.onMenuScrollToBottom,
+			onOpen: this.onOpen.bind(this)
 		});
 	}
 }
