@@ -192,7 +192,7 @@ export default class Async extends Component {
 		if (this.props.shouldReloadOptions && this.props.shouldReloadOptions()) {
 			this.loadOptions();
 		}
-		
+
 		if (this.props.onOpen) {
 			this.props.onOpen();
 		}
